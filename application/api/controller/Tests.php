@@ -14,7 +14,7 @@ use think\Controller;
 use fast\ApiHandleException;
 use fast\ApiException;
 
-class tests extends Controller
+class tests extends Common
 {
     public function index()
     {
@@ -35,11 +35,11 @@ class tests extends Controller
      */
     public function save()
     {
-        $data =input('post.');
+       /* $data =input('post.');
         if ($data['mt']!=1){
             //exception('ooo');
            throw new ApiException('您的数据不合法',400);
-        }
+        }*/
        /* if ($data['ids']){
             echo 1;exit;
         }*/

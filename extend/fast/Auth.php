@@ -18,6 +18,7 @@ use think\Db;
 use think\Config;
 use think\Session;
 use think\Request;
+use fast\Aes;
 
 /**
  * 权限认证类
@@ -286,6 +287,25 @@ class Auth
         }
 
         return $user_info[$uid];
+    }
+
+    /**
+     * 生成sign
+     * @param array $data
+     * @return string
+     */
+    public static function setSign($data=[])
+    {
+        //1 按照字段排序
+        ksort($data);
+        //2 拼接字符串 &
+        $string = http_build_query($data);
+        //3 aes加密
+        $string = (new Aes())->encrypt($string);
+        //4 转换大写
+       // $string = strtoupper($string);
+        return $string;
+
     }
 
 }

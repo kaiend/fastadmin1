@@ -1,50 +1,58 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: kaiend
+ * Date: 2017-01-27
+ * Time: 15:57
+ */
 
 namespace app\api\controller;
 
-use app\api\model\Area;
-use app\common\controller\Api;
-use fast\Version;
-use think\Config;
+
+use think\Controller;
+use fast\Aes;
+use fast\Auth;
 
 /**
- * 公共接口
+ * API公共控制器
+ * Class Common
+ * @package app\api\controller
  */
-class Common extends Api
+class Common extends Controller
 {
 
-    protected $noNeedLogin = '*';
-    protected $noNeedRight = '*';
-
+    /**
+     * 初始化方法
+     */
     public function _initialize()
     {
-        parent::_initialize();
+        $this->checkRequestAuth();
+        $this->testAes();
+
     }
 
     /**
-     * 加载初始化
-     * 
-     * 必选参数:version<br>
-     * 可选参数:lng,lat
+     * 检查每次APP请求的数据合法性
      */
-    public function init()
+    public function checkRequestAuth()
     {
-        if ($version = $this->request->request('version'))
-        {
-            $lng = $this->request->request('lng');
-            $lat = $this->request->request('lat');
-            $content = [
-                'citydata'    => Area::getCityFromLngLat($lng, $lat),
-                'versiondata' => Version::check($version),
-                'uploaddata'  => Config::get('upload'),
-                'coverdata'   => Config::get("cover"),
-            ];
-            $this->success('', $content);
-        }
-        else
-        {
-            $this->error(__('Invalid parameters'));
-        }
+        $headers = request()->header();
+        //todo
+
+        //sign
+
+    }
+
+    public function testAes()
+    {
+        $data=[
+          'did'=>'12345dg',
+            'version'=> 1,
+        ];
+       echo  Auth::setSign($data);exit;
+
+       /*$str = 'sRCvj52mZ8G+u2OdHYwmysvczmCw+RrAYWiEaXFI/5A=';
+       echo (new Aes())->decrypt($str);exit;*/
     }
 
 }
